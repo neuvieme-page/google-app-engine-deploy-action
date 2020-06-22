@@ -36,7 +36,6 @@ function prepareDefaultService() {
 }
 
 function deployToGoogleCloudAppEngine(currentBranch) {
-  console.log(currentBranch);
   core.startGroup("Deploy to Google Cloud App Engine");
   childProcess.execSync(
     `gcloud app deploy ./app.${
@@ -59,7 +58,7 @@ try {
   const serviceAccountFile = `/tmp/${new Date().getTime()}.json`;
   processServiceAccount(core.getInput("service_account"), serviceAccountFile);
   setupGoogleCloudProject(core.getInput("project_id"));
-  prepareDefaultService();
+  // prepareDefaultService();
   deployToGoogleCloudAppEngine(core.getInput("current_branch"));
   unlinkServiceAccountFile(serviceAccountFile);
 } catch (error) {
