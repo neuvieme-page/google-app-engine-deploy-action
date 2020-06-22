@@ -1,0 +1,15 @@
+name: 'Google App Engine Deploy Action'
+description: 'This action allowed you publish application to Google App Engine'
+inputs:
+  service_account:
+    description: 'Service Account File'
+    required: true
+  project_id:
+    description: 'Google Cloud Project Id'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'
+branding:
+  icon: 'box'
+  color: 'blue'
