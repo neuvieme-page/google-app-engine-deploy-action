@@ -36,10 +36,10 @@ function unlinkServiceAccountFile(serviceAccountFile) {
 }
 
 try {
-  const serviceAccountFile = `tmp/${new Date().getTime()}.json`;
+  const serviceAccountFile = `/tmp/${new Date().getTime()}.json`;
   processServiceAccount(core.getInput("service_account"), serviceAccountFile);
   setupGoogleCloudProject(core.getInput("project_id"));
-  deployToGoogleCloudAppEngine(core.getInput('current_branch'));
+  deployToGoogleCloudAppEngine();
   unlinkServiceAccountFile(serviceAccountFile);
 } catch (error) {
   core.setFailed(error.message);
