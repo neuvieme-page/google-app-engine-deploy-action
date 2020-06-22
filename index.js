@@ -43,4 +43,5 @@ try {
   unlinkServiceAccountFile(serviceAccountFile);
 } catch (error) {
   core.setFailed(error.message);
+  process.exit(0);
 }
