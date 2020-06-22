@@ -14,7 +14,7 @@ function processServiceAccount(serviceAccount, serviceAccountFile) {
   core.endGroup();
 }
 
-function setGoogleCloudProject(projectId) {
+function setupGoogleCloudProject(projectId) {
   core.startGroup("Set Google Cloud Project");
   childProcess.execSync(
     `gcloud config set project ${projectId}`,
@@ -23,9 +23,14 @@ function setGoogleCloudProject(projectId) {
   core.endGroup();
 }
 
-function deployToGoogleCloudAppEngine() {
+function deployToGoogleCloudAppEngine(currentBranch) {
+  let configurationFile = null;
+
+  if (currentBranch === 'refs/head/master') configurationFile = 'app.production.yaml'
+  if (currentBranch === 'refs/head/develop') configurationFile = 'app.staging.yaml'
+
   core.startGroup("Deploy to Google Cloud App Engine");
-  childProcess.execSync("gcloud app deploy", childProcessOptions);
+  childProcess.execSync(`npm run build && gcloud app deploy ./${configurationFile}`, childProcessOptions);
   core.endGroup();
 }
 
@@ -38,8 +43,8 @@ function unlinkServiceAccountFile(serviceAccountFile) {
 try {
   const serviceAccountFile = `tmp/${new Date().getTime()}.json`;
   processServiceAccount(core.getInput("service_account"), serviceAccountFile);
-  setGoogleCloudProject(core.getInput("project_id"));
-  deployToGoogleCloudAppEngine();
+  setupGoogleCloudProject(core.getInput("project_id"));
+  deployToGoogleCloudAppEngine(core.getInput('current_branch'));
   unlinkServiceAccountFile(serviceAccountFile);
 } catch (error) {
   core.setFailed(error.message);
