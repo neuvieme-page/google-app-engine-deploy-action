@@ -24,13 +24,8 @@ function setupGoogleCloudProject(projectId) {
 }
 
 function deployToGoogleCloudAppEngine(currentBranch) {
-  let configurationFile = null;
-
-  if (currentBranch === 'refs/head/master') configurationFile = 'app.production.yaml'
-  if (currentBranch === 'refs/head/develop') configurationFile = 'app.staging.yaml'
-
   core.startGroup("Deploy to Google Cloud App Engine");
-  childProcess.execSync(`npm run build && gcloud app deploy ./${configurationFile}`, childProcessOptions);
+  childProcess.execSync(`npm run build && gcloud app deploy`, childProcessOptions);
   core.endGroup();
 }
 
