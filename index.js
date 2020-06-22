@@ -23,9 +23,9 @@ function setupGoogleCloudProject(projectId) {
   core.endGroup();
 }
 
-function deployToGoogleCloudAppEngine(currentBranch) {
+function deployToGoogleCloudAppEngine() {
   core.startGroup("Deploy to Google Cloud App Engine");
-  childProcess.execSync(`npm install && npm run build && gcloud app deploy`, childProcessOptions);
+  childProcess.execSync(`gcloud app deploy`, childProcessOptions);
   core.endGroup();
 }
 
