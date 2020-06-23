@@ -23,22 +23,10 @@ function setupGoogleCloudProject(projectId) {
   core.endGroup();
 }
 
-function prepareDefaultService() {
-  if (
-    childProcess.execSync(`gcloud app services list`, childProcessOptions) ===
-    "Listed 0 items."
-  ) {
-    childProcess.execSync(
-      `gcloud app deploy ./app.default.yaml`,
-      childProcessOptions
-    );
-  }
-}
-
 function deployToGoogleCloudAppEngine(currentBranch) {
   core.startGroup("Deploy to Google Cloud App Engine");
   childProcess.execSync(
-    `gcloud app deploy ./app.${
+    `gcloud app deploy ./configuration/app-engine/app.${
       currentBranch.includes("develop") || currentBranch.includes("release")
         ? "staging"
         : "default"
@@ -58,7 +46,6 @@ try {
   const serviceAccountFile = `/tmp/${new Date().getTime()}.json`;
   processServiceAccount(core.getInput("service_account"), serviceAccountFile);
   setupGoogleCloudProject(core.getInput("project_id"));
-  // prepareDefaultService();
   deployToGoogleCloudAppEngine(core.getInput("current_branch"));
   unlinkServiceAccountFile(serviceAccountFile);
 } catch (error) {
