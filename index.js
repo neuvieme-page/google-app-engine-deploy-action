@@ -26,7 +26,7 @@ function setupGoogleCloudProject(projectId) {
 function deployToGoogleCloudAppEngine(currentBranch) {
   core.startGroup("Deploy to Google Cloud App Engine");
   childProcess.execSync(
-    `gcloud app deploy ./configuration/app-engine/app.${
+    `gcloud app deploy ./app.${
       currentBranch.includes("develop") || currentBranch.includes("release")
         ? "staging"
         : "default"
