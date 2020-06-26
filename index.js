@@ -2,36 +2,50 @@ const core = require("@actions/core");
 const fs = require("fs");
 const childProcess = require("child_process");
 
-const childProcessOptions = { stdio: "inherit" };
+const childProcessOptions = { stdio: "inherit", encoding: "utf-8" };
+
+function handleError(childProcess) {
+  let err = childProcess.stderr.toString().trim();
+  if (err) throw new Error(err);
+}
 
 function processServiceAccount(serviceAccount, serviceAccountFile) {
   core.startGroup("Process Service Account");
   fs.writeFileSync(serviceAccountFile, serviceAccount);
-  childProcess.execSync(
-    `gcloud auth activate-service-account --key-file ${serviceAccountFile}`,
-    childProcessOptions
+  handleError(
+    childProcess.spawnSync(
+      `gcloud auth activate-service-account`,
+      ["--key-file", `${serviceAccountFile}`],
+      childProcessOptions
+    )
   );
   core.endGroup();
 }
 
 function setupGoogleCloudProject(projectId) {
   core.startGroup("Set Google Cloud Project");
-  childProcess.execSync(
-    `gcloud config set project ${projectId}`,
-    childProcessOptions
+  handleError(
+    childProcess.spawnSync(
+      `gcloud config set project`,
+      [`${projectId}`],
+      childProcessOptions
+    )
   );
   core.endGroup();
 }
 
 function deployToGoogleCloudAppEngine(currentBranch) {
   core.startGroup("Deploy to Google Cloud App Engine");
-  childProcess.execSync(
-    `gcloud app deploy ./app.${
-      currentBranch.includes("develop") || currentBranch.includes("release")
-        ? "staging"
-        : "default"
-    }.yaml`,
-    childProcessOptions
+  handleError(
+    childProcess.spawnSync(
+      "gcloud app deploy",
+      [
+        currentBranch.includes("develop") || currentBranch.includes("release")
+          ? "./app.staging.yaml"
+          : "./app.default.yaml",
+      ],
+      childProcessOptions
+    )
   );
   core.endGroup();
 }
