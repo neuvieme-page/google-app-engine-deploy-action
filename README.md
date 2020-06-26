@@ -33,6 +33,10 @@ jobs:
         run: npm run build
       - name: Deploy Project
         uses: neuvieme-page/google-app-engine-deploy-action@master
+        env:
+          SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          CURRENT_BRANCH: ${{ github.ref }}
         with:
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
           project_id: ${{ secrets.PROJECT_ID }}
