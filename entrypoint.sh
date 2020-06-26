@@ -11,7 +11,8 @@ set -e
 SERVICE_ACCOUNT=$1
 PROJECT_ID=$2
 CURRENT_BRANCH=$3
-echo $SERVICE_ACCOUNT > /tmp/service_account.json
+
+mkdir /tmp && echo $SERVICE_ACCOUNT >> /tmp/service_account.json
 gcloud auth activate-service-account --key-file=/tmp/service_account.json
 gcloud config set project $PROJECT_ID
 
