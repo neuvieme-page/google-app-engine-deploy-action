@@ -16,7 +16,7 @@ function processServiceAccount(serviceAccount, serviceAccountFile) {
     handleError(
       childProcess.spawnSync(
         `gcloud auth activate-service-account`,
-        ["--key-file", `${serviceAccountFile}`],
+        ["--key-file", serviceAccountFile],
         childProcessOptions
       )
     );
