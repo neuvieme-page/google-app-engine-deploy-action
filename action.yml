@@ -7,16 +7,9 @@ inputs:
   project_id:
     description: 'Google Cloud Project Id'
     required: true
-  current_branch:
-    description: 'Repository Current Branch'
-    required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.service_account }}
-    - ${{ inputs.project_id }}
-    - ${{ inputs.current_branch }}
+  using: 'node12'
+  main: 'index.js'
 branding:
   icon: 'box'
   color: 'blue'
