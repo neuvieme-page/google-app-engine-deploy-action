@@ -5,8 +5,7 @@ const childProcess = require("child_process");
 const childProcessOptions = { stdio: "inherit", encoding: "utf-8" };
 
 function handleError(childProcess) {
-  let err = childProcess.stderr.toString().trim();
-  if (err) throw new Error(err);
+  if (childProcess.error) throw new Error(childProcess.error);
 }
 
 function processServiceAccount(serviceAccount, serviceAccountFile) {
