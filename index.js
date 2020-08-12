@@ -4,26 +4,23 @@ const childProcess = require("child_process");
 
 const childProcessOptions = { stdio: "inherit" };
 
-let envPath = null
+// let envPath = null
 
-function processEnvFile(currentBranch) {
-  try {
-    const version = currentBranch.includes("develop") || currentBranch.includes("release")
-      ? "development"
-      : "production";
+// function processEnvFile(currentBranch) {
+//   try {
+//     core.startGroup("Write Env File");
+//     const version = currentBranch.includes("develop") || currentBranch.includes("release")
+//       ? "development"
+//       : "production";
 
-    const env = core.getInput(`env_${version}`);
-    envPath = `./env/.${version}`;
-    fs.writeFileSync(envPath, env);
-  } catch(error) {
-    core.setFailed(error.message);
-    throw new Error(error);
-  }
-}
-
-function removeEnvFile() {
-  fs.unlinkSync(envPath);
-}
+//     const env = core.getInput(`env_${version}`);
+//     envPath = `./env/.${version}`;
+//     fs.writeFileSync(envPath, env);
+//   } catch(error) {
+//     core.setFailed(error.message);
+//     throw new Error(error);
+//   }
+// }
 
 function processServiceAccount(serviceAccount, serviceAccountFile) {
   core.startGroup("Process Service Account");
@@ -86,12 +83,11 @@ function unlinkServiceAccountFile(serviceAccountFile) {
 
 try {
   const serviceAccountFile = `/tmp/${new Date().getTime()}.json`;
-  processEnvFile(core.getInput("current_branch"))
+  // processEnvFile(core.getInput("current_branch"))
   processServiceAccount(core.getInput("service_account"), serviceAccountFile);
   setupGoogleCloudProject(core.getInput("project_id"));
   deployToGoogleCloudAppEngine(core.getInput("current_branch"));
   unlinkServiceAccountFile(serviceAccountFile);
-  removeEnvFile();
 } catch (error) {
   core.setFailed(error.message);
   process.exit(1);
