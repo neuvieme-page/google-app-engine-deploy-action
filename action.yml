@@ -7,6 +7,12 @@ inputs:
   project_id:
     description: 'Google Cloud Project Id'
     required: true
+  env_development:
+    description: 'env file'
+    required: true
+  env_production:
+    description: 'env file'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
